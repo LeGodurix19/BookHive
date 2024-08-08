@@ -1,196 +1,96 @@
 # README
 
-## Présentation du Projet
-Ce projet est une application de gestion de bibliothèque et de communauté de lecteurs, permettant aux utilisateurs de suivre des amis, de gérer leur bibliothèque personnelle, et de participer à des discussions sur des livres.
+## Présentation de BookHive
+BookHive est un réseau social innovant dédié aux passionnés de lecture. Conçu pour créer des communautés dynamiques et interactives autour des livres, des auteurs et des librairies, BookHive offre une expérience enrichissante aux lecteurs.
 
 ## Pages Principales et Composants
 
-### 1. AllMessages
-Cette page affiche toutes les conversations de l'utilisateur connecté.
-#### Composants :
-- **MessagePreview**
-  - Image de l'utilisateur avec qui la conversation a été entamée.
-  - Affichage du dernier message de la conversation.
-  - Bouton d'accès à la conversation.
+### 1. Homepage
+- **TopBar** : Titre et icon vers son profil.
+- **Feed** : Flux d'actualités des utilisateurs suivis.
+    - ***Description*** : Reprend les posts des utilisateurs suivis. 
+    - ***Contenu*** : Chaque post contient une image du livre avec un text ainsi que leurs compteurs de like et de comment.
+    - ***Liens*** : 
+        - Nom du user
+        - Nom du livre
+        - Logo commentaire
+- **Navbar** : Barre de navigation en bas de la page composee de home, search, scan et bibliotheques.
 
-- **MessagePreviewGroup**
-  - Image définie par le groupe.
-  - Affichage du dernier message de la conversation de groupe.
-  - Bouton d'accès à la conversation.
+### 2. Search
+- **TopBar** : Titre et icon vers son profil.
+- **SearchBar** : Barre de recherche pour les livres et les utilisateurs.
+- **SearchResults** : Résultats de la recherche.
+    - ***Description*** : Affiche les résultats de la recherche.
+    - ***Contenu*** : Chaque résultat contient une image du livre ou du profil avec un texte.
+    - ***Liens*** : 
+        - Nom du user
+        - Nom du livre
+- **Navbar** : Barre de navigation en bas de la page composee de home, search, scan et bibliotheques.
 
-- **MessagePreviewCommunity**
-  - Image de la communauté avec qui la conversation a été entamée.
-  - Affichage du dernier message de la conversation privée.
-  - Bouton d'accès à la conversation.
+### 3. Scan
+- **TopBar** : Titre et icon vers son profil.
+- **SearchBar** : Barre de recherche pour les livres.
+- **Camera** : Scanner de code-barres.
+- **ScanResults** : Résultats de la recherche.
+    - ***Description*** : Affiche les résultats de la recherche.
+    - ***Contenu*** : Chaque résultat contient une image du livre.
+    - ***Liens*** : 
+        - Nom du livre -> vers update status
+- **Navbar** : Barre de navigation en bas de la page composee de home, search, scan et bibliotheques.
 
-### 2. BookDetails
-Cette page présente les détails d'un livre.
-#### Composants :
-- **BookDetails**
-  - Image du livre.
-  - Titre du livre.
-  - Auteur du livre.
-  - Date de publication du livre.
-  - Description du livre (si disponible).
-  - Bouton pour ajouter le livre à la bibliothèque.
-  - Bouton pour ajouter le livre à la liste de lecture (si disponible).
-  - Bouton pour retirer le livre de la bibliothèque (si lecture terminée).
-  - Bouton pour ajouter une critique.
+### 4. Library
+- **TopBar** : Titre et icon vers son profil.
+<!-- - **Shelves** : Liste des étagères de la bibliothèque.
+    - ***Description*** : Affiche les étagères de la bibliothèque.
+    - ***Contenu*** : Chaque étagère contient une liste de livres.
+    - ***Liens*** : 
+        - Nom du livre -> vers update status -->
+- **Books** : Liste des livres de la bibliothèque.
+    - ***Description*** : Affiche les livres de la bibliothèque.
+    - ***Contenu*** : Chaque livre contient une image et un tracket.
+    - ***Liens*** : 
+        - logo de tracking -> vers update status
+        - image du livre -> vers livre
+- **Navbar** : Barre de navigation en bas de la page composee de home, search, scan et bibliotheques.
 
-### 3. Community
-Cette page reprend tout le contenu d'une communauté.
-#### Composants :
-- **CommunityDetails**
-  - Image de la communauté.
-  - Nom de la communauté.
-  - Description de la communauté.
-  - Nombre de membres de la communauté.
-  - Bouton pour rejoindre la communauté ou pour quitter la communauté.
+### 5. Profil Page
+- **TopBar** : 'profil', icon vers retour et icon vers params.
+- **User** : Informations de l'utilisateur.
+    - ***Description*** : Affiche les informations de l'utilisateur.
+    - ***Contenu*** : Nom, photo de profil, nombre de followers et de following.
+    - ***Liens*** : 
+        - Nom du user -> vers profil
+- **Button** : Bouton pour suivre ou ne plus suivre l'utilisateur si la page n'est pas vers nous meme
+- **Posts** : Liste des posts de l'utilisateur.
+    - ***Description*** : Affiche les posts de l'utilisateur.
+    - ***Contenu*** : Chaque post contient une image du livre avec un text ainsi que leurs compteurs de like et de comment.
+    - ***Liens*** : 
+        - Nom du user
+        - Nom du livre
+        - Logo commentaire
+- **Library** : Liste des livres de l'utilisateur.
+    - ***Description*** : Affiche les livres de l'utilisateur.
+    - ***Contenu*** : Chaque livre contient une image et un tracket.
+    - ***Liens*** : 
+        - logo de tracking -> vers update status
+        - image du livre -> vers livre
+- **Navbar** : Barre de navigation en bas de la page composee de home, search, scan et bibliotheques.
 
-- **CommunityPost**
-  - Image de l'utilisateur ayant posté.
-  - Nom de l'utilisateur ayant posté.
-  - Date de publication du post.
-  - Contenu du post.
-  - Bouton pour ajouter un like.
-  - Bouton pour ajouter un commentaire.
+### 6. Paramètres de Profil
+- **TopBar** : 'paramètres', icon vers retour.
+- **Compte** : Permet la modif liee au compte.
+    - ***Description*** : Permet de modifier les informations du compte.
+    - ***Contenu*** : Nom, email, photo de profil.
+- **Notifications** : Permet la modif liee aux notifications.
+    - ***Description*** : Permet de modifier les notifications.
+    - ***Contenu*** : Notifications activées ou désactivées pour tel ou tel infos.
+- **Securite** : Permet la modif liee a la securite.
+    - ***Description*** : Permet de modifier les informations de sécurité.
+    - ***Contenu*** : Mot de passe, etc.
+- **Social** : Gestion des users.
+    - ***Description*** : Permet de gerer les followers, following et bloques.
+    - ***Contenu*** : followers, following, bloques.
 
-- **CommunityReview**
-  - Image de l'utilisateur ayant posté.
-  - Nom de l'utilisateur ayant posté.
-  - Date de publication de la critique.
-  - Contenu de la critique.
-  - Bouton pour ajouter un like.
-  - Bouton pour ajouter un commentaire.
-
-- **CommunityComment**
-  - Image de l'utilisateur ayant posté.
-  - Nom de l'utilisateur ayant posté.
-  - Date de publication du commentaire.
-  - Contenu du commentaire.
-  - Bouton pour ajouter un like.
-  - Champ pour répondre au commentaire.
-
-### 4. CommunityParametres
-Cette page permet de gérer les paramètres d'une communauté.
-#### Composants :
-- **CommunityParametres**
-  - Champ pour changer l'image de la communauté.
-  - Champ pour changer le nom de la communauté.
-  - Champ pour changer la description de la communauté.
-  - Champ pour définir si un groupe est public ou privé.
-  - Possibilité de supprimer des messages.
-  - Bouton pour valider les changements.
-  - Bouton pour supprimer la communauté.
-
-### 5. Feed
-Cette page reprend les actualités que suit l'utilisateur.
-#### Composants :
-- **FeedPost**
-  - Image de l'utilisateur ayant posté.
-  - Nom de l'utilisateur ayant posté.
-  - Date de publication du post.
-  - Contenu du post.
-  - Bouton pour ajouter un like.
-  - Bouton pour ajouter un commentaire.
-
-- **FeedReview**
-  - Image de l'utilisateur ayant posté.
-  - Nom de l'utilisateur ayant posté.
-  - Date de publication de la critique.
-  - Contenu de la critique.
-  - Bouton pour ajouter un like.
-  - Bouton pour ajouter un commentaire.
-
-- **FeedComment**
-  - Image de l'utilisateur ayant posté.
-  - Nom de l'utilisateur ayant posté.
-  - Date de publication du commentaire.
-  - Contenu du commentaire.
-  - Bouton pour ajouter un like.
-  - Bouton pour répondre au commentaire.
-
-- **FeedPostComment**
-  - Champ de texte pour ajouter un commentaire.
-  - Bouton pour ajouter le commentaire.
-
-### 6. Home
-- (À définir)
-
-### 7. Library
-Cette page affiche tous les livres de l'utilisateur.
-#### Composants :
-- **LibraryBook**
-  - Image du livre.
-  - Pastille pour indiquer si le livre est en cours de lecture.
-  - Interaction pour afficher un menu avec :
-    - Suivi de lecture.
-    - Titre du livre.
-
-### 8. Login
-- (À définir)
-
-### 9. Messages
-Cette page affiche une discussion privée ou de groupe.
-#### Composants :
-- **Message**
-  - Image de l'utilisateur ayant posté.
-  - Nom de l'utilisateur ayant posté.
-  - Date de publication du message.
-  - Contenu du message.
-  - Champ d'entrée pour répondre.
-
-### 10. Profil
-Cette page affiche les informations de l'utilisateur connecté ainsi qu'un accès aux paramètres.
-#### Composants :
-- **ProfilDetails**
-  - Image de l'utilisateur.
-  - Nom de l'utilisateur.
-  - Bouton pour ajouter un ami.
-  - Bouton pour envoyer un message.
-
-- **ProfilContent**
-  - Affichage de tous les posts de l'utilisateur.
-
-### 11. ProfilParametres
-Cette page permet de gérer les paramètres du profil.
-#### Composants :
-- **ProfilParametres**
-  - Champ pour changer l'image de l'utilisateur.
-  - Champ pour changer le nom de l'utilisateur.
-  - Champ pour changer la date de naissance de l'utilisateur.
-  - Champ pour changer la description de l'utilisateur.
-  - Champ pour changer le mot de passe de l'utilisateur.
-  - Bouton pour valider les changements.
-
-### 12. Research
-Cette page présente un éventail de suggestions de livres et de communautés.
-#### Composants :
-- **ResearchBook**
-  - Image du livre.
-  - Titre du livre.
-  - Auteur du livre.
-
-- **ResearchUser**
-  - Image de l'utilisateur.
-  - Nom de l'utilisateur.
-
-- **ResearchCommunityComment**
-  - Image de la communauté.
-  - Nom de la communauté.
-  - Commentaire.
-  - Bouton pour rejoindre la communauté.
-
-### 13. Scan
-Cette page permet de scanner des codes-barres de livres pour les ajouter à une liste.
-#### Composants :
-- **Scan**
-  - Champ pour scanner le code-barres.
-  - Bouton pour valider le scan.
-
-- **Input String**
-  - Champ pour ajouter un livre manuellement avec le titre et/ou l'auteur.
-  - Bouton pour valider l'ajout.
 
 ## Fonctionnalités de Suivi
 Les utilisateurs peuvent suivre d'autres utilisateurs. Si vous suivez quelqu'un, vous devenez leur follower, et si quelqu'un vous suit, vous êtes leur following.
@@ -245,3 +145,7 @@ Les utilisateurs peuvent suivre d'autres utilisateurs. Si vous suivez quelqu'un,
   - Sous-collection `comments`
     - **Document `commentId`**
       - Champs : `userId`, `content`, `timestamp`.
+
+### Collection `errors`
+- **Document `errorId`**
+  - Champs : `userId`, `page`, `timestamp`, `stack`, `error`.
