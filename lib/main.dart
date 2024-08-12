@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart'; // Import pour les localisations
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import pour les traductions générées
 
 import 'class.WidgetTree.dart';
 
@@ -11,7 +13,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() {
   // Utiliser runZonedGuarded pour garantir que tout se passe dans la même zone
   runZonedGuarded(() async {
-    await dotenv.load(fileName: ".env");
+    await dotenv.load(fileName: '.env');
 
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
@@ -42,6 +44,18 @@ class MyApp extends StatelessWidget {
       ),
       navigatorKey: navigatorKey, // Utilisez le GlobalKey ici
       home: const WidgetTree(),
+      // Ajout des localisations
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        AppLocalizations.delegate, // Délégué pour les traductions personnalisées
+      ],
+      supportedLocales: const [
+        Locale('en', ''), // Anglais
+        Locale('fr', ''), // Français
+        // Ajoute d'autres langues si nécessaire
+      ],
     );
   }
 }

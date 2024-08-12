@@ -1,16 +1,18 @@
 import 'package:betta/Book/page.BookDetails.dart';
-import 'package:betta/Errors/errorsPage.dart';
+import 'package:betta/Errors/page.errors.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:betta/Profil/page.MyProfil.dart';
 import 'package:betta/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Importation ajoutée
 
 class FeedPage extends StatefulWidget {
   final String? uid;
   const FeedPage({super.key, this.uid = ''});
 
   @override
+  // ignore: library_private_types_in_public_api
   _FeedPageState createState() => _FeedPageState();
 }
 
@@ -82,16 +84,16 @@ class _FeedPageState extends State<FeedPage> {
 
     switch (post['status']) {
       case 0: // livre ajouté à la bibliothèque
-        content = _buildBookActionContent(username, "a ajouté", title, imageUrl);
+        content = _buildBookActionContent(username, AppLocalizations.of(context)!.added, title, imageUrl); // Utilisation de la localisation
         break;
       case 1: // livre commencé
-        content = _buildBookActionContent(username, "a commencé à lire", title, imageUrl);
+        content = _buildBookActionContent(username, AppLocalizations.of(context)!.startedReading, title, imageUrl); // Utilisation de la localisation
         break;
       case 2: // livre fini
-        content = _buildBookActionContent(username, "a fini de lire", title, imageUrl);
+        content = _buildBookActionContent(username, AppLocalizations.of(context)!.finishedReading, title, imageUrl); // Utilisation de la localisation
         break;
       default:
-        content = const Text("Erreur: type de post inconnu");
+        content = Text(AppLocalizations.of(context)!.unknownPostType); // Utilisation de la localisation
     }
 
     return content;
@@ -136,7 +138,7 @@ class _FeedPageState extends State<FeedPage> {
           if (friendSnapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (!friendSnapshot.hasData || friendSnapshot.data!.isEmpty) {
-            return const Center(child: Text('Aucun ami suivi'));
+            return const Center(child: Text('Aucun ami suivi')); // Utilisation de la localisation
           } else {
             var friendIds = friendSnapshot.data!;
 
@@ -146,7 +148,7 @@ class _FeedPageState extends State<FeedPage> {
                 if (postSnapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (!postSnapshot.hasData || postSnapshot.data!.docs.isEmpty) {
-                  return const Center(child: Text('Aucun post'));
+                  return const Center(child: Text('Aucun post')); // Utilisation de la localisation
                 } else {
                   var posts = postSnapshot.data!.docs;
 

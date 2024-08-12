@@ -4,32 +4,34 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:betta/Errors/errorsPage.dart';
+import 'package:betta/Errors/page.errors.dart';
 import 'package:betta/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:http/http.dart' as http;
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' as rive;
 
-bool estISBN13(String isbn) {
+bool isISBN13(String isbn) {
   if (isbn.length != 13 || (!isbn.startsWith('978') && !isbn.startsWith('979'))) return false;
 
-  int somme = 0;
+  int sum = 0;
   for (int i = 0; i < 12; i++) {
-    somme += int.parse(isbn[i]) * (i.isEven ? 1 : 3);
+    sum += int.parse(isbn[i]) * (i.isEven ? 1 : 3);
   }
 
-  int chiffreDeControle = 10 - (somme % 10);
-  return chiffreDeControle == int.parse(isbn[12]);
+  int checkDigit = 10 - (sum % 10);
+  return checkDigit == int.parse(isbn[12]);
 }
 
 void showRiveAnimationDialog(String animation, bool isLooping, [String? message]) {
+  BuildContext context = navigatorKey.currentContext!;
   List<Widget> contentChild = [
     SizedBox(
       width: 200,
       height: 200,
-      child: RiveAnimation.asset(
+      child: rive.RiveAnimation.asset(
         animation,
         fit: BoxFit.contain,
       ),
@@ -54,11 +56,11 @@ void showRiveAnimationDialog(String animation, bool isLooping, [String? message]
   }
 
   showDialog(
-    context: navigatorKey.currentContext!,
-    builder: (BuildContext buildcontext) {
+    context: context,
+    builder: (BuildContext buildContext) {
       if (!isLooping) {
         Timer(const Duration(milliseconds: 1500), () {
-          if (Navigator.of(buildcontext).canPop()) Navigator.of(buildcontext).pop();
+          if (Navigator.of(buildContext).canPop()) Navigator.of(buildContext).pop();
         });
       }
       return AlertDialog(
@@ -88,7 +90,7 @@ class _ScanPageState extends State<ScanPage> {
   bool showCam = true;
   final TextEditingController textEditingController = TextEditingController();
 
-  Future<void> researchTitles() async {
+  Future<void> researchTitles(BuildContext context) async {
     try {
       String title = textEditingController.text;
       final Uri apiUri = Uri.parse('https://api.book-hive.com/search_title/');
@@ -118,7 +120,7 @@ class _ScanPageState extends State<ScanPage> {
     }
   }
 
-  Future<void> sendBooksToApi() async {
+  Future<void> sendBooksToApi(BuildContext context) async {
     try {
       final Uri apiUri = Uri.parse('https://api.book-hive.com/all_books/');
       showRiveAnimationDialog('assets/send.riv', true);
@@ -148,18 +150,18 @@ class _ScanPageState extends State<ScanPage> {
     }
   }
 
-  void showStatusDialog(int bookIndex) {
+  void showStatusDialog(BuildContext context, int bookIndex) {
     showDialog(
-      context: navigatorKey.currentContext!,
+      context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Sélectionnez le statut de lecture'),
+          title: Text(AppLocalizations.of(context)!.selectReadingStatus),
           content: DropdownButton<int>(
             value: scannedBooks[bookIndex]['status'],
             items: <int>[0, 1, 2].map<DropdownMenuItem<int>>((int value) {
               return DropdownMenuItem<int>(
                 value: value,
-                child: Text(value == 0 ? 'À lire' : value == 1 ? 'En cours' : 'Fini'),
+                child: Text(value == 0 ? AppLocalizations.of(context)!.toRead : value == 1 ? AppLocalizations.of(context)!.reading : AppLocalizations.of(context)!.finished),
               );
             }).toList(),
             onChanged: (int? newValue) {
@@ -183,8 +185,8 @@ class _ScanPageState extends State<ScanPage> {
         scannedIsbns.add(scanData.code!);
       });
 
-      if (!estISBN13(scanData.code!)) {
-        showRiveAnimationDialog("assets/error.riv", true, "Le code scanné n'est pas un ISBN-13 valide");
+      if (!isISBN13(scanData.code!)) {
+        showRiveAnimationDialog("assets/error.riv", true, AppLocalizations.of(context)!.errorNotValidISBN);
         Timer(const Duration(milliseconds: 2000), () {
           if (Navigator.of(navigatorKey.currentContext!).canPop()) Navigator.of(navigatorKey.currentContext!).pop();
         });
@@ -247,12 +249,12 @@ class _ScanPageState extends State<ScanPage> {
               if (!showCam)
                 Stack(
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       height: 100,
                       child: Center(
                         child: Text(
-                          'Résultats de la recherche',
-                          style: TextStyle(fontSize: 20),
+                          AppLocalizations.of(context)!.searchResults,
+                          style: const TextStyle(fontSize: 20),
                         ),
                       ),
                     ),
@@ -260,7 +262,7 @@ class _ScanPageState extends State<ScanPage> {
                       top: 0,
                       right: 0,
                       child: IconButton(
-                        icon: const Icon(Icons.close), // Icône de croix
+                        icon: const Icon(Icons.close), // Close icon
                         onPressed: () {
                           setState(() {
                             books.clear();
@@ -293,7 +295,7 @@ class _ScanPageState extends State<ScanPage> {
                           subtitle: Text(books[index]['author']),
                           onTap: () {
                             setState(() {
-                              // Supposons que books[index] soit une Map<String, dynamic>
+                              // Assume books[index] is a Map<String, dynamic>
                               final bookWithStatus = Map<String, dynamic>.from(books[index]);
                               bookWithStatus['status'] = 0;
                               
@@ -316,7 +318,7 @@ class _ScanPageState extends State<ScanPage> {
                   itemCount: scannedBooks.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () => showStatusDialog(index),
+                      onTap: () => showStatusDialog(context, index),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Image.network(
@@ -332,13 +334,13 @@ class _ScanPageState extends State<ScanPage> {
           ),
           if (showCam)
             Positioned(
-              top: 50, // Ajustez la position selon vos besoins
+              top: 50, // Adjust the position as needed
               left: 20,
               right: 20,
               child: TextField(
                 controller: textEditingController,
                 decoration: InputDecoration(
-                  labelText: 'Enter text',
+                  labelText: AppLocalizations.of(context)!.enterText,
                   filled: true,
                   fillColor: Colors.white.withAlpha(235),
                   border: OutlineInputBorder(
@@ -347,20 +349,20 @@ class _ScanPageState extends State<ScanPage> {
                   ),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search),
-                    onPressed: researchTitles,
+                    onPressed: () => researchTitles(context),
                   ),
                 ),
-                onSubmitted: (value) => researchTitles(),
+                onSubmitted: (value) => researchTitles(context),
               ),
             ),
           Positioned(
             bottom: 120,
             right: 0,
             child: FloatingActionButton(
-              onPressed: sendBooksToApi,
+              onPressed: () => sendBooksToApi(context),
               backgroundColor: Colors.white.withAlpha(235),
-              elevation: 0, // Supprime l'ombre
-              child: const Icon(Icons.arrow_forward, color: Colors.green), // Icône flèche avec couleur
+              elevation: 0, // Remove shadow
+              child: const Icon(Icons.arrow_forward, color: Colors.green), // Arrow icon with color
             ),
           ),
         ],

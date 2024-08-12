@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:betta/Book/page.Scan.dart';
-import 'package:betta/Errors/errorsPage.dart';
+import 'package:betta/Errors/page.errors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:betta/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BookDetailsPage extends StatelessWidget {
   final String isbn;
@@ -92,7 +93,7 @@ class BookDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Détails du livre'),
+        title: Text(AppLocalizations.of(context)!.bookDetailsTitle),
       ),
       body: FutureBuilder<List<dynamic>>(
         future: Future.wait([
@@ -131,48 +132,48 @@ class BookDetailsPage extends StatelessWidget {
                     ),
                   if (book['author'] != null) Text(book['author']),
                   if (book['description'] != null) Text(book['description']),
-                  _buildActionButtons(inLibrary, inWishlist),
+                  _buildActionButtons(context, inLibrary, inWishlist),
                 ],
               ),
             );
           }
-          return const Center(child: Text('Aucune donnée'));
+          return Center(child: Text(AppLocalizations.of(context)!.noData));
         },
       ),
     );
   }
 
-  Widget _buildActionButtons(bool inLibrary, bool inWishlist) {
+  Widget _buildActionButtons(BuildContext context, bool inLibrary, bool inWishlist) {
     List<Widget> buttons = [];
 
     if (!inLibrary) {
       buttons.add(ElevatedButton(
         onPressed: () => toggleCollection(isbn, 'standard', true),
-        child: const Text('Ajouter à la bibliothèque'),
+        child: Text(AppLocalizations.of(context)!.addToLibrary),
       ));
     }
     if (inLibrary) {
       buttons.addAll([
         ElevatedButton(
           onPressed: () => shareBook(isbn),
-          child: const Text('Partager'),
+          child: Text(AppLocalizations.of(context)!.share),
         ),
         ElevatedButton(
           onPressed: () => toggleCollection(isbn, 'standard', false),
-          child: const Text('Retirer de la bibliothèque'),
+          child: Text(AppLocalizations.of(context)!.removeFromLibrary),
         ),
       ]);
     }
     if (!inWishlist && !inLibrary) {
       buttons.add(ElevatedButton(
         onPressed: () => toggleCollection(isbn, 'wishlist', true),
-        child: const Text('Ajouter à la wishlist'),
+        child: Text(AppLocalizations.of(context)!.addToWishlist),
       ));
     }
     if (inWishlist) {
       buttons.add(ElevatedButton(
         onPressed: () => toggleCollection(isbn, 'wishlist', false),
-        child: const Text('Retirer de la wishlist'),
+        child: Text(AppLocalizations.of(context)!.removeFromWishlist),
       ));
     }
 

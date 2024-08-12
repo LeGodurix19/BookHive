@@ -108,14 +108,6 @@ Les utilisateurs peuvent suivre d'autres utilisateurs. Si vous suivez quelqu'un,
 - Créer la page de communauté.
 - Finaliser la page des paramètres de la communauté.
 
-## Urgent
-- Configurer le dépôt GitHub pour le push.
-- Définir la politique concernant les utilisateurs bloqués.
-- Finaliser la gestion des commentaires.
-- Élaborer une liste des abonnements et des abonnés.
-- Continuer le développement des paramètres de l'utilisateur (incluant les notifications).
-- Mettre en place des bibliothèques multiples et des listes de souhaits.
-
 ## Nouvelle Structure de la Base de Données
 
 ### Collection `users`
@@ -149,3 +141,37 @@ Les utilisateurs peuvent suivre d'autres utilisateurs. Si vous suivez quelqu'un,
 ### Collection `errors`
 - **Document `errorId`**
   - Champs : `userId`, `page`, `timestamp`, `stack`, `error`.
+
+
+## Tracking updates
+
+### 0.0.1
+- Création du projet
+- Création des pages principales
+- Création des composants principaux
+- Création des routes principales
+- Création des actions principales
+- Création de la base de données
+- Création des collections principales
+- Ajout de la page de recherche
+- Ajout de la page de scan
+- Ajout de la page de bibliothèque
+- Ajout de la page de profil
+- Ajout de la page actualités
+- Ajout de la page de paramètres de depart pour profil, compte, secu et social
+
+### 0.0.2
+- Mise en place du multilingue
+- Gestion des erreurs ave Sentry
+
+### 0.0.3 (En cours)
+- Mise en place de la verification par email
+- Mise en place de la gestion des commentaires
+- Mise en place des listes des abonnements et des abonnes
+- Définir la politique concernant les utilisateurs bloqués.
+
+### 0.0.4 (A venir)
+- Mise en place de la gestion des posts independant des livres
+- Continuer le développement des paramètres de l'utilisateur (incluant les notifications).
+- Mettre en place des bibliothèques multiples et des listes de souhaits.
+

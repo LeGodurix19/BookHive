@@ -1,5 +1,6 @@
 import 'package:betta/Profil/pagesIn.ChangeAccountSecu/page.ChangePassword.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Importation ajoutée
 
 class ChangeAccountSecuPage extends StatelessWidget {
   const ChangeAccountSecuPage({super.key});
@@ -15,17 +16,17 @@ class ChangeAccountSecuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Modifier les informations de sécurité du compte'),
+        title: Text(AppLocalizations.of(context)!.changeAccountSecurity), // Utilisation de la localisation
       ),
       body: ListView(
         children: <Widget>[
           ListTile(
-            title: const Text('Changer le mot de passe'),
+            title: Text(AppLocalizations.of(context)!.changePassword), // Utilisation de la localisation
             onTap: () => _navigateToPage(context, const ChangePasswordPage()),
           ),
           // Uncomment when you want to add the change photo feature
           // ListTile(
-          //   title: const Text('Changer la photo'),
+          //   title: Text(AppLocalizations.of(context)!.changePhoto), // Utilisation de la localisation
           //   onTap: () => _navigateToPage(context, ChangePhotoPage()),
           // ),
         ],

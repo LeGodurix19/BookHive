@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:betta/Book/page.BookDetails.dart';
 import 'package:betta/Profil/page.MyProfil.dart';
-import 'package:betta/Errors/errorsPage.dart';
+import 'package:betta/Errors/page.errors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

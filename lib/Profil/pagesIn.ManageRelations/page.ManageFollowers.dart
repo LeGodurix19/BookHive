@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:betta/main.dart';
-import 'package:betta/Errors/errorsPage.dart';
+import 'package:betta/Errors/page.errors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Importation ajoutée
 
 class ManageFollowersPage extends StatelessWidget {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -21,12 +22,12 @@ class ManageFollowersPage extends StatelessWidget {
           .set({});
       await removedFollowing(userId, followingUserId);
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
-        const SnackBar(content: Text('Utilisateur bloqué avec succès')),
+        SnackBar(content: Text(AppLocalizations.of(navigatorKey.currentContext!)!.userBlockedSuccessfully)), // Utilisation de la localisation
       );
     } catch (e) {
       await PageError.handleError(e, StackTrace.current);
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
-        SnackBar(content: Text('Erreur lors du blocage de l\'utilisateur: $e')),
+        SnackBar(content: Text(AppLocalizations.of(navigatorKey.currentContext!)!.errorBlockingUser + ': $e')), // Utilisation de la localisation
       );
     }
   }
@@ -47,12 +48,12 @@ class ManageFollowersPage extends StatelessWidget {
           .doc(userId)
           .delete();
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
-        const SnackBar(content: Text('Utilisateur ne vous suit plus')),
+        SnackBar(content: Text(AppLocalizations.of(navigatorKey.currentContext!)!.userNoLongerFollows)), // Utilisation de la localisation
       );
     } catch (e) {
       await PageError.handleError(e, StackTrace.current);
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
-        SnackBar(content: Text('Erreur lors de la suppression du suivi: $e')),
+        SnackBar(content: Text(AppLocalizations.of(navigatorKey.currentContext!)!.errorRemovingFollow + ': $e')), // Utilisation de la localisation
       );
     }
   }
@@ -61,7 +62,7 @@ class ManageFollowersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gestion les followers'),
+        title: Text(AppLocalizations.of(context)!.manageFollowers), // Utilisation de la localisation
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -75,7 +76,7 @@ class ManageFollowersPage extends StatelessWidget {
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('Aucun follower.'));
+            return Center(child: Text(AppLocalizations.of(context)!.noFollowers)); // Utilisation de la localisation
           }
 
           final followings = snapshot.data!.docs;

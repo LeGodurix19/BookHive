@@ -2,8 +2,9 @@ import 'package:betta/Profil/page.MyProfil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:betta/Errors/errorsPage.dart';
+import 'package:betta/Errors/page.errors.dart';
 import 'package:betta/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Importation ajoutée
 
 class ManageBlockedPage extends StatelessWidget {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -14,7 +15,7 @@ class ManageBlockedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gérer les utilisateurs bloqués'),
+        title: Text(AppLocalizations.of(context)!.manageBlockedUsers), // Utilisation de la localisation
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -28,7 +29,7 @@ class ManageBlockedPage extends StatelessWidget {
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('Aucun utilisateur bloqué.'));
+            return Center(child: Text(AppLocalizations.of(context)!.noBlockedUsers)); // Utilisation de la localisation
           }
 
           final blockedUsers = snapshot.data!.docs;
@@ -94,7 +95,7 @@ class ManageBlockedPage extends StatelessWidget {
                         } catch (e) {
                           await PageError.handleError(e, StackTrace.current);
                           ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
-                            const SnackBar(content: Text('Erreur lors de la suppression.')),
+                            SnackBar(content: Text(AppLocalizations.of(context)!.errorDeleting)), // Utilisation de la localisation
                           );
                         }
                       },

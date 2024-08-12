@@ -1,6 +1,7 @@
 import 'package:betta/Profil/pagesIn.ChangeAccountInfo/page.ChangeEmail.dart';
 import 'package:betta/Profil/pagesIn.ChangeAccountInfo/page.ChangePseudo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Importation ajoutée
 
 class ChangeAccountInfoPage extends StatelessWidget {
   const ChangeAccountInfoPage({super.key});
@@ -16,21 +17,21 @@ class ChangeAccountInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Modifier les informations du compte'),
+        title: Text(AppLocalizations.of(context)!.changeAccountInfo), // Utilisation de la localisation
       ),
       body: ListView(
         children: <Widget>[
           ListTile(
-            title: const Text('Changer le pseudo'),
+            title: Text(AppLocalizations.of(context)!.changePseudo), // Utilisation de la localisation
             onTap: () => _navigateToPage(context, const ChangePseudoPage()),
           ),
           ListTile(
-            title: const Text('Changer l\'email'),
+            title: Text(AppLocalizations.of(context)!.changeEmail), // Utilisation de la localisation
             onTap: () => _navigateToPage(context, const ChangeEmailPage()),
           ),
           // Uncomment when you want to add the change photo feature
           // ListTile(
-          //   title: const Text('Changer la photo'),
+          //   title: Text(AppLocalizations.of(context)!.changePhoto), // Utilisation de la localisation
           //   onTap: () => _navigateToPage(context, ChangePhotoPage()),
           // ),
         ],

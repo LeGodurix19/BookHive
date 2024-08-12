@@ -1,6 +1,7 @@
-import 'package:betta/main.dart';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Ajoutez cet import
+import 'package:betta/main.dart';
 
 class PageError {
   // Méthode pour gérer l'erreur et envoyer les détails à Sentry
@@ -21,7 +22,7 @@ class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Erreur')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.error)), // Utilisation de la localisation
       body: const Center(
         child: Text('Une erreur inattendue s\'est produite. L\'équipe travaille à la résoudre.'),
       ),

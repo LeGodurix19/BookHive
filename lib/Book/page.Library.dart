@@ -1,9 +1,10 @@
 import 'package:betta/Book/page.BookDetails.dart';
-import 'package:betta/Errors/errorsPage.dart';
+import 'package:betta/Errors/page.errors.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:betta/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import pour les traductions
 
 class Books {
   final String title;
@@ -18,6 +19,7 @@ class LibraryPage extends StatefulWidget {
   const LibraryPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LibraryPageState createState() => _LibraryPageState();
 }
 
@@ -66,13 +68,17 @@ class _LibraryPageState extends State<LibraryPage> {
       context: navigatorKey.currentContext!,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Changer le statut'),
+          title: Text(AppLocalizations.of(context)!.changeStatus), // Utilisation de la localisation
           content: DropdownButton<int>(
             value: book.status,
             items: <int>[0, 1, 2].map<DropdownMenuItem<int>>((int value) {
               return DropdownMenuItem<int>(
                 value: value,
-                child: Text(value == 0 ? 'À lire' : value == 1 ? 'En cours' : 'Fini'),
+                child: Text(value == 0 
+                  ? AppLocalizations.of(context)!.toRead // Utilisation de la localisation
+                  : value == 1 
+                    ? AppLocalizations.of(context)!.reading // Utilisation de la localisation
+                    : AppLocalizations.of(context)!.finished), // Utilisation de la localisation
               );
             }).toList(),
             onChanged: (int? newValue) async {
@@ -109,7 +115,7 @@ class _LibraryPageState extends State<LibraryPage> {
           }
 
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('Aucun livre trouvé'));
+            return Center(child: Text(AppLocalizations.of(context)!.noBooksFound)); // Utilisation de la localisation
           }
 
           List<Books> books = snapshot.data!;

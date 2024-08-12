@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../page.Home.dart';
 import 'class.Auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Importation ajoutée
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (email.isEmpty || password.isEmpty) {
       setState(() {
-        errorMessage = "Please fill in all fields";
+        errorMessage = AppLocalizations.of(context)!.fillAllFields; // Utilisation de la localisation
       });
       return;
     }
@@ -44,16 +45,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildTitle() {
-    return const Text(
-      'Authentification',
-      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return Text(
+      AppLocalizations.of(context)!.authentication, // Utilisation de la localisation
+      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
     );
   }
 
   Widget _buildTextField(String label, TextEditingController controller, {bool obscureText = false}) {
     return TextField(
       controller: controller,
-      decoration: InputDecoration(labelText: label),
+      decoration: InputDecoration(labelText: AppLocalizations.of(context)!.email), // Utilisation de la localisation
       obscureText: obscureText,
     );
   }
@@ -61,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildSubmitButton() {
     return ElevatedButton(
       onPressed: _authenticate,
-      child: Text(isLogin ? 'Sign in' : 'Sign up'),
+      child: Text(isLogin ? AppLocalizations.of(context)!.signIn : AppLocalizations.of(context)!.signUp), // Utilisation de la localisation
     );
   }
 
@@ -69,11 +70,11 @@ class _LoginPageState extends State<LoginPage> {
     return TextButton(
       onPressed: () {
         setState(() {
-          errorMessage = null; // Reset error message
+          errorMessage = null; // Réinitialiser le message d'erreur
           isLogin = !isLogin;
         });
       },
-      child: Text(isLogin ? 'Create an account' : 'Already have an account?'),
+      child: Text(isLogin ? AppLocalizations.of(context)!.createAccount : AppLocalizations.of(context)!.alreadyHaveAccount), // Utilisation de la localisation
     );
   }
 
@@ -95,11 +96,11 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _buildTextField('Email', emailController),
-            _buildTextField('Password', passwordController, obscureText: true),
-            const SizedBox(height: 16), // Adds spacing between elements
+            _buildTextField(AppLocalizations.of(context)!.email, emailController), // Utilisation de la localisation
+            _buildTextField(AppLocalizations.of(context)!.password, passwordController, obscureText: true), // Utilisation de la localisation
+            const SizedBox(height: 16), // Ajoute un espacement entre les éléments
             _buildSubmitButton(),
-            const SizedBox(height: 8), // Adds spacing between elements
+            const SizedBox(height: 8), // Ajoute un espacement entre les éléments
             _buildSwitchButton(),
             _buildErrorMessage(),
           ],

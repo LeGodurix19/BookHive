@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:betta/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Importation ajoutée
+
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ChangePasswordPageState createState() => _ChangePasswordPageState();
 }
 
@@ -32,18 +35,18 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
       // Afficher un message de succès
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
-        const SnackBar(content: Text('Mot de passe mis à jour avec succès')),
+        SnackBar(content: Text(AppLocalizations.of(navigatorKey.currentContext!)!.passwordUpdated)), // Utilisation de la localisation
       );
       Navigator.pop(navigatorKey.currentContext!);
     } on FirebaseAuthException catch (e) {
       // Afficher un message d'erreur basé sur le type d'exception
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
-        SnackBar(content: Text('Erreur: ${e.message}')),
+        SnackBar(content: Text(AppLocalizations.of(navigatorKey.currentContext!)!.error + ': ${e.message}')), // Utilisation de la localisation
       );
     } catch (e) {
       // Afficher un message d'erreur générique
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
-        const SnackBar(content: Text('Erreur lors de la mise à jour du mot de passe')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.errorUpdatingPassword)), // Utilisation de la localisation
       );
     } finally {
       // Réinitialiser l'état de chargement
@@ -57,7 +60,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Changer le mot de passe'),
+        title: Text(AppLocalizations.of(context)!.changePassword), // Utilisation de la localisation
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -68,28 +71,28 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Mot de passe actuel',
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.currentPassword, // Utilisation de la localisation
                       ),
                       obscureText: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Veuillez entrer votre mot de passe actuel';
+                          return AppLocalizations.of(context)!.pleaseEnterCurrentPassword; // Utilisation de la localisation
                         }
                         return null;
                       },
                       onSaved: (value) => _currentPassword = value!,
                     ),
                     TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Nouveau mot de passe',
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.newPassword, // Utilisation de la localisation
                       ),
                       obscureText: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Veuillez entrer un nouveau mot de passe';
+                          return AppLocalizations.of(context)!.pleaseEnterNewPassword; // Utilisation de la localisation
                         } else if (value.length < 6) {
-                          return 'Le mot de passe doit contenir au moins 6 caractères';
+                          return AppLocalizations.of(context)!.passwordTooShort; // Utilisation de la localisation
                         }
                         return null;
                       },
@@ -103,7 +106,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           _changePassword();
                         }
                       },
-                      child: const Text('Changer le mot de passe'),
+                      child: Text(AppLocalizations.of(context)!.changePassword), // Utilisation de la localisation
                     ),
                   ],
                 ),

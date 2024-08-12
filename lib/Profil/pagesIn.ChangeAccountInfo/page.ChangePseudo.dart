@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:betta/Book/page.Scan.dart';
-import 'package:betta/Errors/errorsPage.dart';
+import 'package:betta/Errors/page.errors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:betta/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Importation ajoutée
 
 class ChangePseudoPage extends StatefulWidget {
   const ChangePseudoPage({super.key});
@@ -43,9 +44,9 @@ class _ChangePseudoPageState extends State<ChangePseudoPage> {
 
   Future<String?> _validatePseudo(String? value) async {
     if (value == null || value.isEmpty) {
-      return 'Veuillez entrer un pseudo';
+      return AppLocalizations.of(context)!.pleaseEnterPseudo; // Utilisation de la localisation
     } else if (value.length < 3) {
-      return 'Le pseudo doit contenir au moins 3 caractères';
+      return AppLocalizations.of(context)!.pseudoTooShort; // Utilisation de la localisation
     } else {
       try {
         var result = await FirebaseFirestore.instance
@@ -53,11 +54,11 @@ class _ChangePseudoPageState extends State<ChangePseudoPage> {
             .where('username', isEqualTo: value)
             .get();
         if (result.docs.isNotEmpty) {
-          return 'Ce pseudo est déjà utilisé';
+          return AppLocalizations.of(navigatorKey.currentContext!)!.pseudoAlreadyUsed; // Utilisation de la localisation
         }
       } catch (e) {
         await PageError.handleError(e, StackTrace.current);
-        return 'Erreur lors de la validation du pseudo';
+        return AppLocalizations.of(navigatorKey.currentContext!)!.errorValidatingPseudo; // Utilisation de la localisation
       }
     }
     return null;
@@ -75,7 +76,7 @@ class _ChangePseudoPageState extends State<ChangePseudoPage> {
     } catch (e) {
       await PageError.handleError(e, StackTrace.current);
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
-        const SnackBar(content: Text('Erreur lors de la mise à jour du pseudo')),
+        SnackBar(content: Text(AppLocalizations.of(navigatorKey.currentContext!)!.errorUpdatingPseudo)), // Utilisation de la localisation
       );
     }
   }
@@ -84,7 +85,7 @@ class _ChangePseudoPageState extends State<ChangePseudoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Changer le pseudo'),
+        title: Text(AppLocalizations.of(context)!.changePseudo), // Utilisation de la localisation
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator()) // Afficher un indicateur de chargement
@@ -93,17 +94,17 @@ class _ChangePseudoPageState extends State<ChangePseudoPage> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Nouveau pseudo',
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.newPseudo, // Utilisation de la localisation
                   ),
                   initialValue: _pseudo,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Veuillez entrer un pseudo';
+                      return AppLocalizations.of(context)!.pleaseEnterPseudo; // Utilisation de la localisation
                     } else if (value.length < 3) {
-                      return 'Le pseudo doit contenir au moins 3 caractères';
+                      return AppLocalizations.of(context)!.pseudoTooShort; // Utilisation de la localisation
                     } else if (value == _pseudo) {
-                      return 'Veuillez entrer un nouveau pseudo';
+                      return AppLocalizations.of(context)!.pleaseEnterNewPseudo; // Utilisation de la localisation
                     }
                     return null;
                   },

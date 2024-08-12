@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:betta/Book/page.BookDetails.dart';
 import 'package:betta/Feed/page.Feed.dart';
 import 'package:betta/Profil/page.ProfilParametres.dart';
-import 'package:betta/Errors/errorsPage.dart';
+import 'package:betta/Errors/page.errors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:betta/main.dart'; // Assurez-vous d'importer main.dart pour accéder à navigatorKey
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import des localisations
 
 class Books {
   final String title;
@@ -18,9 +19,11 @@ class Books {
 
 class ProfilPage extends StatefulWidget {
   final String? uid;
+
   const ProfilPage({super.key, this.uid});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ProfilPageState createState() => _ProfilPageState();
 }
 
@@ -53,7 +56,6 @@ class _ProfilPageState extends State<ProfilPage> {
       final followersSnapshot = await userDoc.collection('followers').get();
       final followingsSnapshot = await userDoc.collection('following').get();
 
-
       if (!isMe) {
         final currentUserUid = FirebaseAuth.instance.currentUser!.uid;
         final blockeds = await userDoc.collection('blocked').get();
@@ -81,16 +83,17 @@ class _ProfilPageState extends State<ProfilPage> {
 
   @override
   Widget build(BuildContext context) {
+
     if (isLoading) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Profil')),
+        appBar: AppBar(title: Text(AppLocalizations.of(context)!.profile)),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profil'),
+        title: Text(AppLocalizations.of(context)!.profile),
         actions: [
           if (isMe)
             IconButton(
@@ -166,7 +169,7 @@ class _ProfilPageState extends State<ProfilPage> {
           IconButton(
             icon: Icon(isBlocked ? Icons.block : (isFriend ? Icons.person_remove : Icons.person_add)),
             onPressed: toggleFriendStatus,
-            tooltip: isFriend ? 'Retirer des amis' : 'Ajouter en amis',
+            tooltip: isFriend ? AppLocalizations.of(context)!.remove_friend : AppLocalizations.of(context)!.add_friend,
           ),
         if (isMe)
           IconButton(
@@ -175,7 +178,7 @@ class _ProfilPageState extends State<ProfilPage> {
               FirebaseAuth.instance.signOut();
               navigatorKey.currentState!.pop();
             },
-            tooltip: 'Se déconnecter',
+            tooltip: AppLocalizations.of(context)!.logout,
           ),
       ],
     );
@@ -185,9 +188,9 @@ class _ProfilPageState extends State<ProfilPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _buildStatisticItem('$totalBooks', 'Livres'),
-        _buildStatisticItem('$followingsCount', 'Abonnements'),
-        _buildStatisticItem('$followersCount', 'Abonnés'),
+        _buildStatisticItem('$totalBooks', AppLocalizations.of(context)!.books),
+        _buildStatisticItem('$followingsCount', AppLocalizations.of(context)!.followings),
+        _buildStatisticItem('$followersCount', AppLocalizations.of(context)!.followers),
       ],
     );
   }
@@ -207,11 +210,11 @@ class _ProfilPageState extends State<ProfilPage> {
       children: [
         ElevatedButton(
           onPressed: () => setState(() => showPosts = true),
-          child: const Text('Posts'),
+          child: Text(AppLocalizations.of(context)!.posts),
         ),
         ElevatedButton(
           onPressed: () => setState(() => showPosts = false),
-          child: const Text('Bibliothèque'),
+          child: Text(AppLocalizations.of(context)!.library),
         ),
       ],
     );
@@ -255,7 +258,7 @@ class _ProfilPageState extends State<ProfilPage> {
         }
 
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('Aucun livre trouvé'));
+          return Center(child: Text(AppLocalizations.of(context)!.no_books_found)); // Utiliser les localisations
         }
 
         return Padding(

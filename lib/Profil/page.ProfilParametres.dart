@@ -3,50 +3,53 @@ import 'package:flutter/material.dart';
 import 'page.ChangeAccountInfo.dart';
 import 'page.ChangeAccountSecu.dart';
 import 'page.NotifsSettings.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Importer les localisations
 
 class ProfilParametresPage extends StatelessWidget {
   const ProfilParametresPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!; // Récupérer les localisations
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Paramètres du Profil'),
+        title: Text(localizations.profile), // Utiliser la clé pour le titre
       ),
       body: ListView(
-        children: _buildListTiles(context),
+        children: _buildListTiles(context, localizations),
       ),
     );
   }
 
-  List<Widget> _buildListTiles(BuildContext context) {
+  List<Widget> _buildListTiles(BuildContext context, AppLocalizations localizations) {
     return [
       _buildListTile(
         context,
         icon: Icons.person,
-        title: 'Compte',
-        subtitle: 'Informations personnelles',
+        title: localizations.account, // Utiliser la clé pour le titre
+        subtitle: localizations.personal_info, // Utiliser la clé pour le sous-titre
         destination: const ChangeAccountInfoPage(),
       ),
       _buildListTile(
         context,
         icon: Icons.security,
-        title: 'Sécurité',
-        subtitle: 'Paramètres de sécurité',
+        title: localizations.security, // Utiliser la clé pour le titre
+        subtitle: localizations.security_settings, // Utiliser la clé pour le sous-titre
         destination: const ChangeAccountSecuPage(),
       ),
       _buildListTile(
         context,
         icon: Icons.notifications,
-        title: 'Notifications',
-        subtitle: 'Préférences de notification',
+        title: localizations.notifications, // Utiliser la clé pour le titre
+        subtitle: localizations.notification_preferences, // Utiliser la clé pour le sous-titre
         destination: const NotificationSettingsPage(),
       ),
       _buildListTile(
         context,
         icon: Icons.group_rounded,
-        title: 'Social',
-        subtitle: 'Gestion des relations',
+        title: localizations.social, // Utiliser la clé pour le titre
+        subtitle: localizations.manage_relationships, // Utiliser la clé pour le sous-titre
         destination: const ManageRelations(),
       ),
       // Ajoutez d'autres ListTile ici si nécessaire

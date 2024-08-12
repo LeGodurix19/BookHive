@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:betta/Book/page.Scan.dart';
-import 'package:betta/Errors/errorsPage.dart';
+import 'package:betta/Errors/page.errors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:betta/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Importation ajoutée
 
 class ChangeEmailPage extends StatefulWidget {
   const ChangeEmailPage({super.key});
@@ -43,10 +44,10 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
 
   Future<String?> _validateEmail(String? value) async {
     if (value == null || value.isEmpty) {
-      return 'Veuillez entrer un email';
+      return AppLocalizations.of(context)!.pleaseEnterEmail; // Utilisation de la localisation
     }
     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-      return 'Veuillez entrer un email valide';
+      return AppLocalizations.of(context)!.pleaseEnterValidEmail; // Utilisation de la localisation
     }
     try {
       var result = await FirebaseFirestore.instance
@@ -54,11 +55,11 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
           .where('email', isEqualTo: value)
           .get();
       if (result.docs.isNotEmpty) {
-        return 'Cet email est déjà utilisé';
+        return AppLocalizations.of(navigatorKey.currentContext!)!.emailAlreadyUsed; // Utilisation de la localisation
       }
     } catch (e) {
       await PageError.handleError(e, StackTrace.current);
-      return 'Erreur lors de la validation de l\'email';
+      return AppLocalizations.of(navigatorKey.currentContext!)!.errorValidatingEmail; // Utilisation de la localisation
     }
     return null;
   }
@@ -75,7 +76,7 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
     } catch (e) {
       await PageError.handleError(e, StackTrace.current);
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
-        const SnackBar(content: Text('Erreur lors de la mise à jour de l\'email')),
+        SnackBar(content: Text(AppLocalizations.of(navigatorKey.currentContext!)!.errorUpdatingEmail)), // Utilisation de la localisation
       );
     }
   }
@@ -84,7 +85,7 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Changer l\'email'),
+        title: Text(AppLocalizations.of(context)!.changeEmail), // Utilisation de la localisation
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator()) // Afficher un indicateur de chargement
@@ -93,15 +94,15 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: TextFormField(
-                  decoration: const InputDecoration(labelText: 'Nouvel email'),
+                  decoration: InputDecoration(labelText: AppLocalizations.of(context)!.newEmail), // Utilisation de la localisation
                   initialValue: _email,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Veuillez entrer un email';
+                      return AppLocalizations.of(context)!.pleaseEnterEmail; // Utilisation de la localisation
                     } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                      return 'Veuillez entrer un email valide';
+                      return AppLocalizations.of(context)!.pleaseEnterValidEmail; // Utilisation de la localisation
                     } else if (value == _email) {
-                      return 'Veuillez entrer un nouvel email';
+                      return AppLocalizations.of(context)!.pleaseEnterNewEmail; // Utilisation de la localisation
                     }
                     return null;
                   },
