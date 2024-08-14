@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:betta/main.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,6 +19,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   bool _isLoading = false;
 
   Future<void> _changePassword() async {
+    var context = navigatorKey.currentContext!;
     setState(() {
       _isLoading = true;
     });

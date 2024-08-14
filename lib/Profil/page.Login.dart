@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:betta/main.dart';
 import '../page.Home.dart';
 import 'class.Auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Importation ajoutée
@@ -14,7 +15,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String? errorMessage;
   bool isLogin = true;
-  
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (email.isEmpty || password.isEmpty) {
       setState(() {
-        errorMessage = AppLocalizations.of(context)!.fillAllFields; // Utilisation de la localisation
+        errorMessage = AppLocalizations.of(navigatorKey.currentContext!)!.fillAllFields; // Utilisation de la localisation
       });
       return;
     }
@@ -32,10 +32,10 @@ class _LoginPageState extends State<LoginPage> {
     try {
       if (isLogin) {
         await Auth().signInWithEmailAndPassword(email: email, password: password);
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
+        Navigator.of(navigatorKey.currentContext!).pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
       } else {
         await Auth().createUserWithEmailAndPassword(email: email, password: password);
-        ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
           const SnackBar(content: Text('Un email de vérification a été envoyé. Veuillez vérifier votre email.')),
         );
         setState(() {
@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildTitle() {
     return Text(
-      AppLocalizations.of(context)!.authentication, // Utilisation de la localisation
+      AppLocalizations.of(navigatorKey.currentContext!)!.authentication, // Utilisation de la localisation
       style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
     );
   }
@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildSubmitButton() {
     return ElevatedButton(
       onPressed: _authenticate,
-      child: Text(isLogin ? AppLocalizations.of(context)!.signIn : AppLocalizations.of(context)!.signUp), // Utilisation de la localisation
+      child: Text(isLogin ? AppLocalizations.of(navigatorKey.currentContext!)!.signIn : AppLocalizations.of(context)!.signUp), // Utilisation de la localisation
     );
   }
 
@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
           isLogin = !isLogin;
         });
       },
-      child: Text(isLogin ? AppLocalizations.of(context)!.createAccount : AppLocalizations.of(context)!.alreadyHaveAccount), // Utilisation de la localisation
+      child: Text(isLogin ? AppLocalizations.of(navigatorKey.currentContext!)!.createAccount : AppLocalizations.of(context)!.alreadyHaveAccount), // Utilisation de la localisation
     );
   }
 
