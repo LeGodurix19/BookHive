@@ -6,10 +6,12 @@ import 'package:betta/main.dart';
 import 'package:betta/Errors/page.errors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Importation ajoutée
 
+// ignore: must_be_immutable
 class ManageFollowersPage extends StatelessWidget {
-  final String? userId = FirebaseAuth.instance.currentUser?.uid;
+  final String? ownUID = FirebaseAuth.instance.currentUser?.uid;
+  String? userId;
 
-  ManageFollowersPage({super.key});
+  ManageFollowersPage({super.key, this.userId});
 
   // Fonction pour bloquer un utilisateur
   Future<void> blockedUser(String userId, String followingUserId) async {
@@ -60,6 +62,7 @@ class ManageFollowersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    userId ??= ownUID;
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.manageFollowers), // Utilisation de la localisation
@@ -129,7 +132,8 @@ class ManageFollowersPage extends StatelessWidget {
                       },
                       child: Text(userName),
                     ),
-                    trailing: Row(
+                    trailing: userId == ownUID
+                     ? Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
@@ -145,7 +149,7 @@ class ManageFollowersPage extends StatelessWidget {
                           },
                         ),
                       ],
-                    ),
+                    ) : null,
                   );
                 },
               );

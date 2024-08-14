@@ -7,6 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:betta/main.dart'; // Assurez-vous d'importer main.dart pour accéder à navigatorKey
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import des localisations
+import 'package:betta/Profil/pagesIn.ManageRelations/page.ManageFollowers.dart';
+import 'package:betta/Profil/pagesIn.ManageRelations/page.ManageFollowings.dart';
 
 class Books {
   final String title;
@@ -46,6 +48,13 @@ class _ProfilPageState extends State<ProfilPage> {
     uid = widget.uid ?? FirebaseAuth.instance.currentUser!.uid;
     isMe = uid == FirebaseAuth.instance.currentUser!.uid;
     _fetchProfile();
+  }
+
+  void _navigateTo(BuildContext context, Widget page) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => page),
+    );
   }
 
   Future<void> _fetchProfile() async {
@@ -189,8 +198,25 @@ class _ProfilPageState extends State<ProfilPage> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _buildStatisticItem('$totalBooks', AppLocalizations.of(context)!.books),
-        _buildStatisticItem('$followingsCount', AppLocalizations.of(context)!.followings),
-        _buildStatisticItem('$followersCount', AppLocalizations.of(context)!.followers),
+        if (!isMe) 
+          GestureDetector(
+            onTap: () {
+                _navigateTo(context, ManageFollowersPage(userId: uid));
+            },
+            child: _buildStatisticItem('$followingsCount', AppLocalizations.of(context)!.followings),
+          ),
+        if (!isMe)
+          GestureDetector(
+            onTap: () {
+                _navigateTo(context, ManageFollowingsPage(userId: uid));
+            },
+            child: _buildStatisticItem('$followersCount', AppLocalizations.of(context)!.followers),
+          ),
+        if (isMe)
+          _buildStatisticItem('$followingsCount', AppLocalizations.of(context)!.followings),
+        if (isMe)
+          _buildStatisticItem('$followersCount', AppLocalizations.of(context)!.followers),
+
       ],
     );
   }

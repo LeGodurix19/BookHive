@@ -166,12 +166,22 @@ Les utilisateurs peuvent suivre d'autres utilisateurs. Si vous suivez quelqu'un,
 
 ### 0.0.3 (En cours)
 - Mise en place de la verification par email
-- Mise en place de la gestion des commentaires
 - Mise en place des listes des abonnements et des abonnes
 - Définir la politique concernant les utilisateurs bloqués.
 
 ### 0.0.4 (A venir)
-- Mise en place de la gestion des posts independant des livres
 - Continuer le développement des paramètres de l'utilisateur (incluant les notifications).
 - Mettre en place des bibliothèques multiples et des listes de souhaits.
 
+### 0.0.5 (A venir)
+- Mise en place de la gestion des messages privés
+- Mise en place de la gestion des groupes
+- Mise en place des communautés
+
+### 0.0.6 (A venir)
+- Refonte du design
+
+### 0.0.?
+- Mise en place de la gestion des commentaires
+- Mise en place de la gestion des posts independant des livres
+- Definition de la politique des posts
