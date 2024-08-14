@@ -32,11 +32,17 @@ class _LoginPageState extends State<LoginPage> {
     try {
       if (isLogin) {
         await Auth().signInWithEmailAndPassword(email: email, password: password);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
       } else {
         await Auth().createUserWithEmailAndPassword(email: email, password: password);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Un email de vérification a été envoyé. Veuillez vérifier votre email.')),
+        );
+        setState(() {
+          isLogin = true;
+        });
       }
       // ignore: use_build_context_synchronously
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -54,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildTextField(String label, TextEditingController controller, {bool obscureText = false}) {
     return TextField(
       controller: controller,
-      decoration: InputDecoration(labelText: AppLocalizations.of(context)!.email), // Utilisation de la localisation
+      decoration: InputDecoration(labelText: label), // Utilisation de la localisation
       obscureText: obscureText,
     );
   }

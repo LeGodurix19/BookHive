@@ -165,9 +165,9 @@ Les utilisateurs peuvent suivre d'autres utilisateurs. Si vous suivez quelqu'un,
 - Gestion des erreurs ave Sentry
 
 ### 0.0.3 (En cours)
-- Mise en place de la verification par email
-- Mise en place des listes des abonnements et des abonnes
-- Définir la politique concernant les utilisateurs bloqués.
+1. Mise en place de la verification par email
+2. Mise en place des listes des abonnements et des abonnes
+3. Définir la politique concernant les utilisateurs bloqués.
 
 ### 0.0.4 (A venir)
 - Continuer le développement des paramètres de l'utilisateur (incluant les notifications).

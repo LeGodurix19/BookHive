@@ -10,19 +10,38 @@ class Auth {
 
   Stream<User?> authStateChanges() => _auth.authStateChanges();
 
+  Stream<bool> emailUpdates() {
+    return _auth.userChanges().map((user) => user!.emailVerified);
+  }
+
   Future<void> signInWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
     try {
-      await _auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      User? user = userCredential.user;
+      if (user != null && !user.emailVerified) {
+        // Déconnecter l'utilisateur si l'email n'est pas vérifié
+        await signOut();
+
+        // Informer l'utilisateur de vérifier son email
+        throw FirebaseAuthException(
+          code: 'email-not-verified',
+          message: 'Veuillez vérifier votre email pour continuer.',
+        );
+      }
+    } on FirebaseAuthException {
+      rethrow;
     } catch (e) {
       await _handleError(e);
     }
   }
+
 
   Future<void> createUserWithEmailAndPassword({
     required String email,
@@ -34,14 +53,22 @@ class Auth {
         password: password,
       );
 
-      String? uid = userCredential.user?.uid;
-      if (uid != null) {
-        await _initializeUserData(uid, email);
+      User? user = userCredential.user;
+
+      if (user != null) {
+        // Envoyer un email de vérification
+        await user.sendEmailVerification();
+
+        // Initialiser les données utilisateur
+        await _initializeUserData(user.uid, email);
       }
+    } on FirebaseAuthException {
+      rethrow;
     } catch (e) {
       await _handleError(e);
     }
   }
+
 
   Future<void> _initializeUserData(String uid, String email) async {
     // Créer le document utilisateur avec les champs de base
