@@ -10,9 +10,24 @@ class Auth {
 
   Stream<User?> authStateChanges() => _auth.authStateChanges();
 
-  Stream<bool> emailUpdates() {
-    return _auth.userChanges().map((user) => user!.emailVerified);
+  Stream<List<bool>> emailUpdates() async* {
+    await for (var user in _auth.userChanges()) {
+      if (user != null) {
+        var uid = user.uid;
+        
+        // Écouter les changements en temps réel sur le document Firestore
+        await for (var userDocSnapshot in _firestore.collection('Users').doc(uid).snapshots()) {
+          var userDoc = userDocSnapshot.data();
+          bool firstTime = userDoc?['firstTime'] ?? false;
+          bool emailVerified = user.emailVerified;
+
+          // Émettre les nouvelles valeurs du Stream
+          yield [emailVerified, firstTime];
+        }
+      }
+    }
   }
+
 
   Future<void> signInWithEmailAndPassword({
     required String email,
@@ -77,10 +92,11 @@ class Auth {
       'Email': email,
       'Picture': "",
       'Uid': uid,
+      "firstTime": true,
     });
 
     // Créer les sous-collections et documents nécessaires
-    final userRef = _firestore.collection('users').doc(uid).collection('shelves');
+    final userRef = _firestore.collection('Users').doc(uid).collection('shelves');
     await userRef.doc('standard').set({});
     await userRef.doc('wishlist').set({});
     await _firestore.collection('users').doc(uid).collection('followers').doc(uid).set({});

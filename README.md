@@ -161,8 +161,12 @@ Les utilisateurs peuvent bloquer d'autres utilisateurs. Si vous bloquez quelqu'u
 4. Faire la gestion des images profil
 5. Lors de la premiere connexion, faire page pour demander le nom et la photo de profil
 
+#### Modifications
+Desormais les updates de developpement seront faites dans la branche `vX.X.X` et les push finaux de branches seront mis sur `master`.
+
 ### 0.0.4 (A venir)
-- Continuer le développement des paramètres de l'utilisateur (incluant les notifications).
+- Continuer le développement des paramètres de l'utilisateur: notifs, images.
+- Developper un outils d'edit pour les images
 - Mettre en place des bibliothèques multiples et des listes de souhaits.
 - Faire une recherche par auteur
 

@@ -1,3 +1,5 @@
+import 'package:betta/Profil/class.Auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:betta/Profil/page.MyProfil.dart';
 import 'package:betta/Research/page.Research.dart';
@@ -36,15 +38,53 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future<String?> _getUrlPic() async {
+    var documentSnapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(Auth().user!.uid)
+        .get();
+    if (documentSnapshot.exists) {
+      var data = documentSnapshot.data() as Map<String, dynamic>?;
+      return data?['Picture'];
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('BookHive'),
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.account_circle),
-            onPressed: _navigateToProfile,
+          FutureBuilder<String?>(
+            future: _getUrlPic(),
+            builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return const Icon(Icons.error);
+              } else {
+                var urlPic = snapshot.data;
+                return IconButton(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: urlPic != null && urlPic.isNotEmpty
+                          ? DecorationImage(
+                              image: NetworkImage(urlPic),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
+                    ),
+                    child: urlPic == null || urlPic.isEmpty
+                        ? const Icon(Icons.account_circle, size: 100)
+                        : null,
+                  ),
+                  onPressed: _navigateToProfile,
+                );
+              }
+            },
           ),
         ],
       ),

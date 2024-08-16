@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:betta/Profil/page.ProfilCustom.dart';
 import 'package:flutter/material.dart';
 import 'package:betta/Book/page.BookDetails.dart';
 import 'package:betta/Feed/page.Feed.dart';
@@ -47,6 +48,19 @@ class _ProfilPageState extends State<ProfilPage> {
   @override
   void initState() {
     super.initState();
+
+    final queryUser = FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid);
+    queryUser.get().then((doc) {
+      if (doc.exists) {
+        if (doc['firstTime'] == true) {
+          doc.reference.update({'firstTime': false});
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ProfilCustom()),
+          );
+        }
+      }
+    });
 
     uid = widget.uid ?? FirebaseAuth.instance.currentUser!.uid;
     isMe = uid == FirebaseAuth.instance.currentUser!.uid;
