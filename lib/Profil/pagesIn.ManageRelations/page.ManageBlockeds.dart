@@ -92,6 +92,13 @@ class ManageBlockedPage extends StatelessWidget {
                               .collection('blocked')
                               .doc(blockedUserId)
                               .delete();
+
+                          await FirebaseFirestore.instance
+                              .collection('Users')
+                              .doc(blockedUserId)
+                              .collection('blockedBy')
+                              .doc(userId)
+                              .delete();
                         } catch (e) {
                           await PageError.handleError(e, StackTrace.current);
                           ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(

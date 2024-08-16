@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:betta/Book/page.BookDetails.dart';
 import 'package:betta/Feed/page.Feed.dart';
@@ -45,8 +47,44 @@ class _ProfilPageState extends State<ProfilPage> {
   @override
   void initState() {
     super.initState();
+
     uid = widget.uid ?? FirebaseAuth.instance.currentUser!.uid;
     isMe = uid == FirebaseAuth.instance.currentUser!.uid;
+    if (!isMe) {
+      final queryBlocked = FirebaseFirestore.instance
+          .collection('Users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('blocked')
+          .doc(uid);
+      final queryBlockedBy = FirebaseFirestore.instance
+          .collection('Users')
+          .doc(uid)
+          .collection('blockedBy')
+          .doc(FirebaseAuth.instance.currentUser!.uid);
+      queryBlocked.get().then((doc) {
+        if (doc.exists) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(AppLocalizations.of(context)!.messageBlockedUser)),
+          );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ProfilPage()),
+          );
+        }
+      });
+      queryBlockedBy.get().then((doc) {
+        if (doc.exists) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(AppLocalizations.of(context)!.messgeBlockedBy)),
+          );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ProfilPage()),
+          );
+          }
+      });
+
+    }
     _fetchProfile();
   }
 

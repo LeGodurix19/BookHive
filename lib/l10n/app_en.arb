@@ -109,5 +109,8 @@
   "notifications": "Notifications",
   "notification_preferences": "Notification Preferences",
   "social": "Social",
-  "manage_relationships": "Manage Relationships"
+  "manage_relationships": "Manage Relationships",
+
+  "messgeBlockedBy": "You have been blocked by this user",
+  "messageBlockedUser": "You have blocked this user"
 }

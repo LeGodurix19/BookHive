@@ -14,14 +14,31 @@ Future<List<Map<String, dynamic>>> _buildList(
     String query, String collection) async {
   try {
     if (collection == 'Users') {
+      final queryBlocked = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('blocked')
+          .get();
+
+      final blockedUsers = queryBlocked.docs.map((doc) => doc.id).toList();
+
+      final queryBlockedBy = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('blockedBy')
+          .get();
+
+      final blockedByUsers = queryBlockedBy.docs.map((doc) => doc.id).toList();
+
       final startAtUsername = query;
-      final endAtUsername = query + '\uf8ff'; // Caractère Unicode pour la recherche
+      final endAtUsername = '$query\uf8ff'; // Caractère Unicode pour la recherche
       final querySnapshot = await FirebaseFirestore.instance
           .collection('Users')
           .where('username', isGreaterThanOrEqualTo: startAtUsername)
           .where('username', isLessThanOrEqualTo: endAtUsername)
           .get();
-      return querySnapshot.docs.map((doc) => doc.data()).toList();
+      final users = querySnapshot.docs.map((doc) => doc.data()).toList();
+      return users.where((user) => !blockedUsers.contains(user['Uid']) && !blockedByUsers.contains(user['Uid'])).toList();
     } else {
       final Uri apiUri = Uri.parse('https://api.book-hive.com/search_title/');
       final response = await http.post(
@@ -55,6 +72,7 @@ class ResearchPage extends StatefulWidget {
   const ResearchPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ResearchPageState createState() => _ResearchPageState();
 }
 

@@ -95,18 +95,8 @@ BookHive est un réseau social innovant dédié aux passionnés de lecture. Con�
 ## Fonctionnalités de Suivi
 Les utilisateurs peuvent suivre d'autres utilisateurs. Si vous suivez quelqu'un, vous devenez leur follower, et si quelqu'un vous suit, vous êtes leur following.
 
-## À Faire
-- Détails sur les pages et leurs fonctionnalités.
-- Détails sur les composants de chaque page.
-- Détails sur les routes de chaque page.
-- Détails sur les actions de chaque page.
-- Améliorer les recherches de livres et de noms d'utilisateur.
-- Améliorer la page des paramètres de profil.
-- Améliorer la page de gestion des livres.
-- Développer les fonctionnalités de messagerie.
-- Créer la page d'actualités.
-- Créer la page de communauté.
-- Finaliser la page des paramètres de la communauté.
+## Comportement du blocage
+Les utilisateurs peuvent bloquer d'autres utilisateurs. Si vous bloquez quelqu'un, vous ne pourrez plus voir leurs posts/livres et ils ne pourront plus voir les vôtres. Egalement, vous ne le verrez plus dans les recherches. Cependant il reste possible de le debloquer. Et de voir le nom et la photo de profil via des amis a la personne bloquee cependant lacces a sa page sera bloque.
 
 ## Nouvelle Structure de la Base de Données
 
@@ -167,21 +157,30 @@ Les utilisateurs peuvent suivre d'autres utilisateurs. Si vous suivez quelqu'un,
 ### 0.0.3 (En cours)
 1. Mise en place de la verification par email
 2. Mise en place des listes des abonnements et des abonnes
-3. Définir la politique concernant les utilisateurs bloqués.
+3. Définir la politique concernant les utilisateurs bloqués (voir en haut) et l'appliquer
+4. Faire la gestion des images profil
+5. Lors de la premiere connexion, faire page pour demander le nom et la photo de profil
 
 ### 0.0.4 (A venir)
 - Continuer le développement des paramètres de l'utilisateur (incluant les notifications).
 - Mettre en place des bibliothèques multiples et des listes de souhaits.
+- Faire une recherche par auteur
 
 ### 0.0.5 (A venir)
 - Mise en place de la gestion des messages privés
 - Mise en place de la gestion des groupes
-- Mise en place des communautés
+- Definir la politique de privacy
+- Ajout du principe de privacy
+  - Possibilite de mettre des bibliothèques en privé
+  - Possibilite de mettre des posts en privé
+  - Possibilite de mettre son compte en prive
+
 
 ### 0.0.6 (A venir)
 - Refonte du design
 
 ### 0.0.?
+- Mise en place des communautés
 - Mise en place de la gestion des commentaires
 - Mise en place de la gestion des posts independant des livres
 - Definition de la politique des posts

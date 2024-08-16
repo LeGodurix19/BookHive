@@ -22,6 +22,13 @@ class ManageFollowingsPage extends StatelessWidget {
           .collection('blocked')
           .doc(followingUserId)
           .set({});
+
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(followingUserId)
+          .collection('blockedBy')
+          .doc(userId)
+          .set({});
       await removedFollowing(userId, followingUserId);
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
         SnackBar(content: Text(AppLocalizations.of(navigatorKey.currentContext!)!.userBlockedSuccessfully)), // Utilisation de la localisation
