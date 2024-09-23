@@ -67,19 +67,29 @@ class _HomePageState extends State<HomePage> {
               } else {
                 var urlPic = snapshot.data;
                 return IconButton(
-                  icon: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: urlPic != null && urlPic.isNotEmpty
-                          ? DecorationImage(
-                              image: NetworkImage(urlPic),
-                              fit: BoxFit.cover,
-                            )
-                          : null,
-                    ),
-                    child: urlPic == null || urlPic.isEmpty
-                        ? const Icon(Icons.account_circle, size: 100)
-                        : null,
+                  icon: Stack(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: urlPic != null && urlPic.isNotEmpty
+                              ? DecorationImage(
+                                  image: NetworkImage(urlPic),
+                                  fit: BoxFit.contain,
+                                )
+                              : null,
+                        ),
+                        child: urlPic == null || urlPic.isEmpty
+                            ? const Icon(Icons.account_circle, size: 40)
+                            : null,
+                      ),
+                      if (snapshot.connectionState == ConnectionState.waiting)
+                        const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                    ],
                   ),
                   onPressed: _navigateToProfile,
                 );

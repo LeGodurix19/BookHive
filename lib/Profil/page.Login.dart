@@ -1,3 +1,5 @@
+import 'package:betta/Profil/page.ProfilCustom.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:betta/main.dart';
@@ -32,7 +34,13 @@ class _LoginPageState extends State<LoginPage> {
     try {
       if (isLogin) {
         await Auth().signInWithEmailAndPassword(email: email, password: password);
-        Navigator.of(navigatorKey.currentContext!).pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
+        bool isFirstTime = await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).get().then((doc) => doc['firstTime']);
+        if (Auth().user!.emailVerified == true && isFirstTime == true) {
+          print("isFirstTime");
+          Navigator.of(navigatorKey.currentContext!).pushReplacement(MaterialPageRoute(builder: (context) => const ProfilCustom()));
+        } else {
+          Navigator.of(navigatorKey.currentContext!).pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
+        }
       } else {
         await Auth().createUserWithEmailAndPassword(email: email, password: password);
         ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(

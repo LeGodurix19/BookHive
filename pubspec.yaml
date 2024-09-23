@@ -2,7 +2,7 @@ name: betta
 description: "A simple test."
 publish_to: 'none' # Prevents accidental publishing to pub.dev
 
-version: 0.0.2+1
+version: 0.0.3+1
 
 environment:
   sdk: '>=3.3.3 <4.0.0'

@@ -99,9 +99,9 @@ class Auth {
     final userRef = _firestore.collection('Users').doc(uid).collection('shelves');
     await userRef.doc('standard').set({});
     await userRef.doc('wishlist').set({});
-    await _firestore.collection('users').doc(uid).collection('followers').doc(uid).set({});
-    await _firestore.collection('users').doc(uid).collection('following').doc(uid).set({});
-    await _firestore.collection('users').doc(uid).collection('blocked').doc(uid).set({});
+    await _firestore.collection('Users').doc(uid).collection('followers').doc(uid).set({});
+    await _firestore.collection('Users').doc(uid).collection('following').doc(uid).set({});
+    await _firestore.collection('Users').doc(uid).collection('blocked').doc(uid).set({});
   }
 
   Future<void> signOut() async {

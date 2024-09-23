@@ -36,8 +36,17 @@ class _ProfilCustomState extends State<ProfilCustom> {
     });
     String pseudo = _pseudoController.text;
     String? imagePath = _imageFile?.path;
+    if (pseudo.isEmpty) {
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Veuillez entrer un pseudo')),
+      );
+      return;
+    }
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    if (imagePath != null) {
+    if (_imageFile != null && imagePath != null && imagePath.isNotEmpty) {
       try {
         // Upload de l'image sur Firebase Storage
         File file = File(imagePath);
@@ -75,8 +84,11 @@ class _ProfilCustomState extends State<ProfilCustom> {
     } else {
       // Mettre à jour uniquement le pseudo si aucune image n'est sélectionnée
       try {
-        await FirebaseFirestore.instance.collection('users').doc(uid).update({
-          'pseudo': pseudo,
+        setState(() {
+              _isLoading = false;
+        });
+        await FirebaseFirestore.instance.collection('Users').doc(uid).update({
+          'username': pseudo,
         });
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Pseudo mis à jour avec succès.')),
